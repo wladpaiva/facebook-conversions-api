@@ -28,7 +28,7 @@ export function FacebookTrackOnRender<T extends Facebook.Event.EventName>({
     custom_data?: Facebook.Event.CustomData<T>
     event_id?: string
   }
-}) {
+}): null {
   const pixel = useFacebookPixel()
 
   useEffect(() => {

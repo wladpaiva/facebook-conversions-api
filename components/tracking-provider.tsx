@@ -17,7 +17,7 @@ export function FacebookTrackingProvider({
    * The child components to be wrapped.
    */
   children: React.ReactNode
-}) {
+}): JSX.Element {
   return (
     <FacebookPixelProvider
       pixelId={client.config.pixelId}

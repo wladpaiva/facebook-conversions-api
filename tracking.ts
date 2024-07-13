@@ -1,14 +1,13 @@
 import type {Facebook} from './types'
 import {
-  AppData,
-  Content,
   CustomData,
   EventRequest,
+  type EventResponse,
   ServerEvent,
   UserData,
 } from 'facebook-nodejs-business-sdk'
 import {getIp} from './utils'
-import {cookies, headers} from 'next/headers'
+import {cookies, headers} from 'next/headers.js'
 
 /**
  * Configuration options for Facebook tracking.
@@ -82,7 +81,7 @@ export class FacebookTracking {
     data_processing_options_state,
     advanced_measurement_table,
     advertiser_tracking_enabled,
-  }: Facebook.Event.EventData<T>) {
+  }: Facebook.Event.EventData<T>): Promise<EventResponse | undefined> {
     if (!this.config.accessToken || !this.config.pixelId) {
       return
     }

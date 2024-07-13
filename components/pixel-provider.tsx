@@ -1,6 +1,6 @@
 'use client'
 
-import Script from 'next/script'
+import Script from 'next/script.js'
 import {createContext, useContext, useState} from 'react'
 import type {Facebook} from '../types'
 
@@ -45,19 +45,20 @@ export const FacebookPixelProvider = ({
   )
 }
 
-declare global {
-  // eslint-disable-next-line no-unused-vars
-  interface Window {
-    fbq: any
-  }
-}
-
 /**
  * Custom hook to access the FacebookPixel context.
  *
  * @returns The FacebookPixel context.
  */
-export const useFacebookPixel = () => {
+export function useFacebookPixel(): {
+  pageview(): void
+  track<T extends Facebook.Event.EventName>(
+    event: Facebook.Event.EventDataBrowser<T>,
+  ): void
+  grantConsent(): void
+  revokeConsent(): void
+  init(pixelId: string): void
+} | null {
   const context = useContext(FacebookPixelContext)
   if (context === null) {
     throw new Error(

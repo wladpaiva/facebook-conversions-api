@@ -1,4 +1,4 @@
-import {headers} from 'next/headers'
+import {headers} from 'next/headers.js'
 
 /**
  * Retrieves the client IP address from the request headers.

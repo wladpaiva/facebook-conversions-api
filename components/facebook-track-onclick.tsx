@@ -61,7 +61,7 @@ export function FacebookTrackOnClick<
      */
     event_id: string
   }) => Promise<void>
-}) {
+}): JSX.Element {
   const pixel = useFacebookPixel()
   const event_id = uuidv7()
 
