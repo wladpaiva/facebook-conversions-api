@@ -1,11 +1,16 @@
 {
   "name": "@wladpaiva/next-facebook-tracking",
-  "module": "index.ts",
+  "module": "dist/index.js",
+  "types": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "build": "esbuild src/**/*.{ts,tsx} --outdir=./dist"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
-    "@types/react": "^18.3.3"
+    "@types/react": "^18.3.3",
+    "esbuild": "^0.23.0"
   },
   "peerDependencies": {
     "next": "^14.2.5",
