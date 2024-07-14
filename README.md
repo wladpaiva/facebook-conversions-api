@@ -63,6 +63,42 @@ export default function RootLayout({children}) {
 }
 ```
 
+### Create a Custom Script
+
+`FacebookTrackingProvider` will load try to load Facebook's Pixel script from
+`/scripts/pixel.js` after the first render so you need to create this file:
+
+```js
+// public/scripts/pixel.js
+const PIXEL_ID = document.currentScript.getAttribute('data-pixel-id')
+
+function initializeFacebookPixel(f, b, e, v, n, t, s) {
+  if (f.fbq) return
+  n = f.fbq = function () {
+    n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+  }
+  if (!f._fbq) f._fbq = n
+  n.push = n
+  n.loaded = !0
+  n.version = '2.0'
+  n.queue = []
+  t = b.createElement(e)
+  t.async = !0
+  t.src = v
+  s = b.getElementsByTagName(e)[0]
+  s.parentNode.insertBefore(t, s)
+}
+
+initializeFacebookPixel(
+  window,
+  document,
+  'script',
+  'https://connect.facebook.net/en_US/fbevents.js',
+)
+
+window.fbq('init', PIXEL_ID)
+```
+
 ### Track Events on Page Load and Interactions
 
 Use the `facebook` instance to track events on page load and interactions in
