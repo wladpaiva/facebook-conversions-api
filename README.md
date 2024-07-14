@@ -10,13 +10,7 @@ events.
 Install the package via npm or yarn:
 
 ```bash
-npx jsr add @wladpaiva/next-facebook-tracking
-```
-
-or
-
-```bash
-bunx jsr add @wladpaiva/next-facebook-tracking
+npm i --save next-facebook-tracking
 ```
 
 ## Usage
@@ -27,7 +21,7 @@ First, create a Facebook tracking instance:
 
 ```ts
 // facebook.ts
-import {FacebookTracking} from '@wladpaiva/next-facebook-tracking'
+import {FacebookTracking} from 'next-facebook-tracking'
 
 export const facebook = new FacebookTracking({
   // pixelId: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL,
@@ -46,7 +40,7 @@ Wrap your application's layout with the `FacebookTrackingProvider` in
 import {
   FacebookTrackingProvider,
   FacebookPageView,
-} from '@wladpaiva/next-facebook-tracking'
+} from 'next-facebook-tracking'
 import {facebook} from './facebook'
 
 export default function RootLayout({children}) {
@@ -110,7 +104,7 @@ import {facebook} from './facebook'
 import {
   FacebookTrackOnClick,
   FacebookTrackOnRender,
-} from '@wladpaiva/next-facebook-tracking'
+} from 'next-facebook-tracking'
 
 export default async function Home() {
   // This will run on the server
