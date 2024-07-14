@@ -1,5 +1,5 @@
 {
-  "name": "@wladpaiva/next-facebook-tracking",
+  "name": "next-facebook-tracking",
   "description": "A simple package to help you integrate Facebook Pixel and Conversions API with Next.js",
   "version": "0.1.0",
   "keywords": [
