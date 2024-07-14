@@ -1,4 +1,7 @@
 import fs from 'fs'
+import {glob} from 'glob'
+
+const entrypoints = await glob('src/**/*.{ts,tsx}')
 
 function getExternalsFromPackageJson() {
   const packageJson = JSON.parse(fs.readFileSync('./package.json').toString())
@@ -10,14 +13,12 @@ function getExternalsFromPackageJson() {
     if (packageJson[section])
       Object.keys(packageJson[section]).forEach(_ => externals.add(_))
 
-  console.log('externals', externals)
-
   return Array.from(externals)
 }
 
 await Bun.build({
-  entrypoints: ['./src/index.ts'],
+  entrypoints,
   outdir: './dist',
-  external: getExternalsFromPackageJson(),
-  splitting: true,
+  external: ['*'],
+  minify: false,
 })

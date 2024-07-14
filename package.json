@@ -9,7 +9,8 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
-    "@types/react": "^18.3.3"
+    "@types/react": "^18.3.3",
+    "glob": "^11.0.0"
   },
   "peerDependencies": {
     "next": "^14.2.5",
