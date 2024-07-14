@@ -1,7 +1,11 @@
 {
   "name": "@wladpaiva/next-facebook-tracking",
-  "module": "index.ts",
+  "module": "./dist/index.js",
+  "types": "./src/index.ts",
   "type": "module",
+  "scripts": {
+    "build": "bun run scripts/build.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
