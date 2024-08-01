@@ -86,9 +86,6 @@ export class FacebookTracking {
       return
     }
 
-    const cookieStore = cookies()
-    const headersList = headers()
-
     const data = new CustomData(
       // @ts-ignore - doesn't really matter if it's undefined from here
       custom_data?.value,
@@ -122,6 +119,8 @@ export class FacebookTracking {
       custom_data?.custom_properties,
     )
 
+    const requestData = this.getRequestData()
+
     const user = new UserData(
       user_data?.email,
       user_data?.phone,
@@ -134,10 +133,10 @@ export class FacebookTracking {
       user_data?.zip,
       user_data?.country,
       user_data?.external_id,
-      user_data?.client_ip_address ?? getIp(),
-      user_data?.client_user_agent ?? (headersList.get('user-agent') as string),
-      user_data?.fbp ?? cookieStore.get('_fbp')?.value,
-      user_data?.fbc ?? cookieStore.get('_fbc')?.value,
+      user_data?.client_ip_address ?? requestData.user_data.client_ip_address,
+      user_data?.client_user_agent ?? requestData.user_data.client_user_agent,
+      user_data?.fbp ?? requestData.user_data.fbp,
+      user_data?.fbc ?? requestData.user_data.fbc,
       user_data?.subscription_id,
       user_data?.fb_login_id,
       user_data?.lead_id,
@@ -152,7 +151,7 @@ export class FacebookTracking {
     const event = new ServerEvent(
       event_name,
       event_time ?? Math.floor(new Date().getTime() / 1000), // Convert to seconds
-      event_source_url ?? (headersList.get('referer') as string),
+      event_source_url ?? requestData.event_source_url,
       user,
       data,
       undefined, // app_data, NOT SURE IF IT'S NEEDED
@@ -177,5 +176,31 @@ export class FacebookTracking {
 
     event_request.setDebugMode(this.config.debug ?? false)
     return await event_request.execute()
+  }
+
+  /**
+   * Retrieves request-related data including user cookies and headers.
+   *
+   * @returns An object containing user data and event source URL.
+   * @property {Object} user_data - Contains user-specific information.
+   * @property {string} user_data.fbp - Facebook pixel cookie value.
+   * @property {string} user_data.fbc - Facebook click cookie value.
+   * @property {string} user_data.client_ip_address - Client's IP address.
+   * @property {string} user_data.client_user_agent - Client's user agent string.
+   * @property {string} event_source_url - The referring URL.
+   */
+  public getRequestData(): Facebook.Event.RequestData {
+    const cookieStore = cookies()
+    const headersList = headers()
+
+    return {
+      user_data: {
+        fbp: cookieStore.get('_fbp')?.value,
+        fbc: cookieStore.get('_fbc')?.value,
+        client_ip_address: getIp(),
+        client_user_agent: headersList.get('user-agent') ?? undefined,
+      },
+      event_source_url: headersList.get('referer') ?? undefined,
+    }
   }
 }

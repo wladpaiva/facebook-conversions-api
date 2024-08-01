@@ -251,6 +251,16 @@ export namespace Facebook {
       page_id?: string
     }
 
+    export type UserRequestData = Pick<
+      UserData,
+      'fbp' | 'fbc' | 'client_ip_address' | 'client_user_agent'
+    >
+
+    export interface RequestData {
+      user_data: UserRequestData
+      event_source_url?: string
+    }
+
     /**
      * Props that are going to be passed to facebook's tracking function
      */
