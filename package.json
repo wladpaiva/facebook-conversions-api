@@ -1,7 +1,7 @@
 {
   "name": "next-facebook-tracking",
   "description": "A simple package to help you integrate Facebook Pixel and Conversions API with Next.js",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "keywords": [
     "next",
     "facebook",
@@ -11,21 +11,21 @@
     "api"
   ],
   "files": [
-    "dist",
-    "src"
+    "dist"
   ],
   "license": "MIT",
   "module": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "esbuild src/**/*.{ts,tsx} --outdir=./dist"
+    "dev": "tsup --watch",
+    "build": "tsup"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
     "@types/react": "^18.3.3",
-    "esbuild": "^0.23.0"
+    "tsup": "^8.2.3"
   },
   "peerDependencies": {
     "next": "^14.2.5",
