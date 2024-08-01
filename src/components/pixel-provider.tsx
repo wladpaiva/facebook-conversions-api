@@ -45,6 +45,12 @@ export const FacebookPixelProvider = ({
   )
 }
 
+declare global {
+  interface Window {
+    fbq: (...args: any[]) => void
+  }
+}
+
 /**
  * Custom hook to access the FacebookPixel context.
  *
