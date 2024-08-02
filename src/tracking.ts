@@ -6,8 +6,7 @@ import {
   ServerEvent,
   UserData,
 } from 'facebook-nodejs-business-sdk'
-import {getIp} from './utils'
-import {cookies, headers} from 'next/headers.js'
+import {getRequestData} from './utils'
 
 /**
  * Configuration options for Facebook tracking.
@@ -119,7 +118,7 @@ export class FacebookTracking {
       custom_data?.custom_properties,
     )
 
-    const requestData = this.getRequestData()
+    const requestData = getRequestData()
 
     const user = new UserData(
       user_data?.email,
@@ -176,31 +175,5 @@ export class FacebookTracking {
 
     event_request.setDebugMode(this.config.debug ?? false)
     return await event_request.execute()
-  }
-
-  /**
-   * Retrieves request-related data including user cookies and headers.
-   *
-   * @returns An object containing user data and event source URL.
-   * @property {Object} user_data - Contains user-specific information.
-   * @property {string} user_data.fbp - Facebook pixel cookie value.
-   * @property {string} user_data.fbc - Facebook click cookie value.
-   * @property {string} user_data.client_ip_address - Client's IP address.
-   * @property {string} user_data.client_user_agent - Client's user agent string.
-   * @property {string} event_source_url - The referring URL.
-   */
-  public getRequestData(): Facebook.Event.RequestData {
-    const cookieStore = cookies()
-    const headersList = headers()
-
-    return {
-      user_data: {
-        fbp: cookieStore.get('_fbp')?.value,
-        fbc: cookieStore.get('_fbc')?.value,
-        client_ip_address: getIp(),
-        client_user_agent: headersList.get('user-agent') ?? undefined,
-      },
-      event_source_url: headersList.get('referer') ?? undefined,
-    }
   }
 }

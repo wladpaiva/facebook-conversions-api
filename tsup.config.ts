@@ -6,7 +6,7 @@ export default defineConfig({
   treeshake: false,
   dts: true,
   bundle: false,
-  format: ['esm'],
+  format: ['esm', 'cjs'],
   clean: true,
   minify: true,
   minifyWhitespace: true,

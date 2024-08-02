@@ -1,4 +1,6 @@
-import {headers} from 'next/headers.js'
+export {parseFullName} from 'parse-full-name'
+import {cookies, headers} from 'next/headers.js'
+import type {Facebook} from './types'
 
 /**
  * Retrieves the client IP address from the request headers.
@@ -14,4 +16,31 @@ export function getIp(): string {
   }
 
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
+}
+
+/**
+ * Retrieves request-related data including user cookies and headers.
+ *
+ * @returns An object containing user data and event source URL.
+ * @property {Object} user_data - Contains user-specific information.
+ * @property {string} user_data.fbp - Facebook pixel cookie value.
+ * @property {string} user_data.fbc - Facebook click cookie value.
+ * @property {string} user_data.client_ip_address - Client's IP address.
+ * @property {string} user_data.client_user_agent - Client's user agent string.
+ * @property {string} event_source_url - The referring URL.
+ */
+
+export function getRequestData(): Facebook.Event.RequestData {
+  const cookieStore = cookies()
+  const headersList = headers()
+
+  return {
+    user_data: {
+      fbp: cookieStore.get('_fbp')?.value,
+      fbc: cookieStore.get('_fbc')?.value,
+      client_ip_address: getIp(),
+      client_user_agent: headersList.get('user-agent') ?? undefined,
+    },
+    event_source_url: headersList.get('referer') ?? undefined,
+  }
 }
