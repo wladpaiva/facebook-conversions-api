@@ -1,7 +1,7 @@
 {
   "name": "next-facebook-tracking",
   "description": "A simple package to help you integrate Facebook Pixel and Conversions API with Next.js",
-  "version": "0.1.7-alpha.5",
+  "version": "0.1.7-alpha.6",
   "keywords": [
     "next",
     "facebook",
@@ -22,6 +22,11 @@
       "import": "./dist/index.js",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components/index.js",
+      "require": "./dist/components/index.cjs",
+      "types": "./dist/components/index.d.ts"
     },
     "./utils": {
       "import": "./dist/utils.js",

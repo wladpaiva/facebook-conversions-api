@@ -1,5 +1,5 @@
-import Link from "next/link";
-import { FacebookTrackOnRender } from "next-facebook-tracking";
+import Link from 'next/link'
+import {FacebookTrackOnRender} from 'next-facebook-tracking/components'
 
 export default function NamePage() {
   return (
@@ -9,10 +9,10 @@ export default function NamePage() {
       <p className="py-10">Should track on render</p>
       <FacebookTrackOnRender
         event={{
-          event_name: "InitiateCheckout",
+          event_name: 'InitiateCheckout',
           custom_data: {
             value: 30.1,
-            currency: "USD",
+            currency: 'USD',
             num_items: 3,
           },
         }}
@@ -20,5 +20,5 @@ export default function NamePage() {
 
       <Link href="/">Go to Page 1</Link>
     </div>
-  );
+  )
 }
