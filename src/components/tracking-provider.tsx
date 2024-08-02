@@ -1,5 +1,5 @@
 import React from 'react'
-import {type FacebookTracking} from '../tracking'
+import type {FacebookTracking} from '../tracking'
 import {FacebookPixelProvider} from './pixel-provider'
 
 /**
