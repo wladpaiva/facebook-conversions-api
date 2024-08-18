@@ -140,7 +140,10 @@ export namespace Facebook {
         Contents,
         Currency,
         NumItems,
-        Value {}
+        Value {
+      currency: string
+      value: number
+    }
 
     export interface Schedule extends FacebookData {}
 
