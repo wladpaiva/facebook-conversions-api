@@ -40,7 +40,7 @@ Wrap your application's layout with the `FacebookTrackingProvider` in
 import {
   FacebookTrackingProvider,
   FacebookPageView,
-} from 'next-facebook-tracking'
+} from 'next-facebook-tracking/components'
 import {facebook} from './facebook'
 
 export default function RootLayout({children}) {
@@ -104,7 +104,7 @@ import {facebook} from './facebook'
 import {
   FacebookTrackOnClick,
   FacebookTrackOnRender,
-} from 'next-facebook-tracking'
+} from 'next-facebook-tracking/components'
 
 export default async function Home() {
   // This will run on the server
