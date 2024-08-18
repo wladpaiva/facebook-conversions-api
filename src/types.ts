@@ -1,144 +1,186 @@
 export namespace Facebook {
   export namespace Event {
+    interface ContentCategory {
+      /**
+       * Category of the page/product.
+       * Optional.
+       */
+      content_category?: string
+    }
+
+    interface ContentIds {
+      /**
+       * Product IDs associated with the event, such as SKUs (e.g. ['ABC123', 'XYZ789']).
+       */
+      content_ids?: string[] | number[]
+    }
+
+    interface ContentName {
+      /**
+       * Name of the page/product.
+       * Optional.
+       */
+      content_name?: string
+    }
+
+    interface ContentType {
+      /**
+       * Either 'product' or 'product_group' based on the content_ids or contents being passed.
+       * If the IDs being passed in content_ids or contents parameter are IDs of products, then the value should be 'product'.
+       * If product group IDs are being passed, then the value should be 'product_group'.
+       * If no content_type is provided, Meta will match the event to every item that has the same ID, independent of its type.
+       */
+      content_type?: 'product' | 'product_group'
+    }
+
+    interface Contents {
+      /**
+       * An array of JSON objects that contains the quantity and the International Article Number (EAN) when applicable,
+       * or other product or content identifier(s). id and quantity are the required fields.
+       * e.g. [{'id': 'ABC123', 'quantity': 2}, {'id': 'XYZ789', 'quantity': 2}].
+       */
+      contents?: Array<{id: string; quantity: number}>
+    }
+
+    interface Currency {
+      /**
+       * The currency for the value specified.
+       */
+      currency?: string
+    }
+
+    interface NumItems {
+      /**
+       * Used with InitiateCheckout event. The number of items when checkout was initiated.
+       */
+      num_items?: number
+    }
+
+    interface PredictedLtv {
+      /**
+       * Predicted lifetime value of a subscriber as defined by the advertiser and expressed as an exact value.
+       */
+      predicted_ltv?: number
+    }
+
+    interface SearchString {
+      /**
+       * Used with the Search event. The string entered by the user for the search.
+       */
+      search_string?: string
+    }
+
+    interface Status {
+      /**
+       * Used with the CompleteRegistration event, to show the status of the registration.
+       * Optional.
+       */
+      status?: boolean
+    }
+
+    interface Value {
+      /**
+       * The value of a user performing this event to the business.
+       */
+      value?: number
+    }
+
     export interface FacebookData {}
 
-    export interface AddPaymentInfo extends FacebookData {
-      content_category?: string
-      content_ids?: object[] | object
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface AddPaymentInfo
+      extends FacebookData,
+        ContentIds,
+        Contents,
+        Currency,
+        Value {}
 
-    /**
-     * content_type required and at least one of content_ids or contents required
-     * this version is compatible with dynamic ads
-     */
-    export interface DynamicAdAddToCart extends FacebookData {
-      content_ids?: object[] | object
-      content_name?: string
-      content_type: string
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface AddToCart
+      extends FacebookData,
+        ContentIds,
+        ContentType,
+        Contents,
+        Currency,
+        Value {}
 
-    /**
-     * this version is not compatible with dynamic ads
-     */
-    export interface AddToCart extends FacebookData {
-      content_ids?: object[] | object
-      content_name?: string
-      content_type?: string
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface AddToWishlist
+      extends FacebookData,
+        ContentIds,
+        Contents,
+        Currency,
+        Value {}
 
-    export interface AddToWishlist extends FacebookData {
-      content_name?: string
-      content_category?: string
-      content_ids?: object[] | object
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface CompleteRegistration
+      extends FacebookData,
+        Currency,
+        Value,
+        Status {}
 
-    export interface CompleteRegistration extends FacebookData {
-      content_name?: String
-      currency?: string
-      status?: string
-      value?: number
-    }
+    export interface Contact extends FacebookData {}
 
-    export interface InitiateCheckout extends FacebookData {
-      content_category?: string
-      content_ids?: object[] | object
-      contents?: object[]
-      currency?: string
-      num_items?: number
-      value?: number
-    }
+    export interface CustomizeProduct extends FacebookData {}
 
-    export interface Lead extends FacebookData {
-      content_category?: string
-      content_name?: string
-      currency?: string
-      value?: number
-    }
+    export interface Donate extends FacebookData {}
 
-    /**
-     * content_type required and at least one of content_ids or contents required
-     * this version is compatible with dynamic ads
-     */
-    export interface DynamicAdPurchase extends FacebookData {
-      content_ids?: object[] | object
-      content_name?: string
-      content_type: string
-      contents?: object[]
-      currency: string
-      num_items?: number
-      value: number
-    }
+    export interface FindLocation extends FacebookData {}
 
-    /**
-     * this version is not compatible with dynamic ads
-     */
-    export interface Purchase extends FacebookData {
-      content_ids?: object[] | object
-      content_name?: string
-      content_type?: string
-      contents?: object[]
-      currency: string
-      num_items?: number
-      value: number
-    }
+    export interface InitiateCheckout
+      extends FacebookData,
+        ContentIds,
+        Contents,
+        Currency,
+        NumItems,
+        Value {}
 
-    export interface Search extends FacebookData {
-      content_category?: string
-      content_ids?: object[] | object
-      contents?: object[]
-      currency?: string
-      search_string?: string
-      value?: number
-    }
+    export interface Lead extends FacebookData, Currency, Value {}
 
-    export interface StartTrial extends FacebookData {
-      currency?: string
-      predicted_ltv?: number
-      value: number
-    }
+    export interface Purchase
+      extends FacebookData,
+        ContentIds,
+        ContentType,
+        Contents,
+        Currency,
+        NumItems,
+        Value {}
 
-    export interface Subscribe extends FacebookData {
-      currency?: string
-      predicted_ltv?: number
-      value: number
-    }
+    export interface Schedule extends FacebookData {}
 
-    /**
-     * content_type required and at least one of content_ids or contents required
-     * this version is compatible with dynamic ads
-     */
-    export interface DynamicAdViewContent extends FacebookData {
-      content_ids?: string[] | string
-      content_name?: string
-      content_type: string
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface Search
+      extends FacebookData,
+        ContentIds,
+        ContentType,
+        Contents,
+        Currency,
+        SearchString,
+        Value {}
 
-    /**
-     * this version is not compatible with dynamic ads
-     */
-    export interface ViewContent extends FacebookData {
-      content_ids?: string[] | string
-      content_name?: string
-      content_type?: string
-      contents?: object[]
-      currency?: string
-      value?: number
-    }
+    export interface StartTrial
+      extends FacebookData,
+        Currency,
+        PredictedLtv,
+        Value {}
+
+    export interface PageView
+      extends FacebookData,
+        ContentIds,
+        ContentType,
+        Currency,
+        Value {}
+
+    export interface SubmitApplication extends FacebookData {}
+
+    export interface Subscribe
+      extends FacebookData,
+        Currency,
+        PredictedLtv,
+        Value {}
+
+    export interface ViewContent
+      extends FacebookData,
+        ContentIds,
+        ContentType,
+        Contents,
+        Currency,
+        Value {}
 
     /**
      * Represents the possible sources of an action.
@@ -206,6 +248,20 @@ export namespace Facebook {
       ? Subscribe
       : T extends 'ViewContent'
       ? ViewContent
+      : T extends 'PageView'
+      ? PageView
+      : T extends 'Contact'
+      ? Contact
+      : T extends 'CustomizeProduct'
+      ? CustomizeProduct
+      : T extends 'Donate'
+      ? Donate
+      : T extends 'FindLocation'
+      ? FindLocation
+      : T extends 'Schedule'
+      ? Schedule
+      : T extends 'SubmitApplication'
+      ? SubmitApplication
       : FacebookData
 
     export interface UserData {

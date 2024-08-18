@@ -56,15 +56,7 @@ declare global {
  *
  * @returns The FacebookPixel context.
  */
-export function useFacebookPixel(): {
-  pageview(): void
-  track<T extends Facebook.Event.EventName>(
-    event: Facebook.Event.EventDataBrowser<T>,
-  ): void
-  grantConsent(): void
-  revokeConsent(): void
-  init(pixelId: string): void
-} | null {
+export function useFacebookPixel() {
   const context = useContext(FacebookPixelContext)
   if (context === null) {
     throw new Error(
@@ -77,19 +69,9 @@ export function useFacebookPixel(): {
 
   return {
     /**
-     * Sends a pageview event to Facebook Pixel.
-     */
-    pageview() {
-      if (context.debug) {
-        console.log('Facebook Pixel: PageView')
-      }
-
-      window.fbq('track', 'PageView')
-    },
-
-    /**
      * Sends a custom event to Facebook Pixel.
      */
+
     track<T extends Facebook.Event.EventName>(
       event: Facebook.Event.EventDataBrowser<T>,
     ) {

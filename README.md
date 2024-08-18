@@ -49,7 +49,12 @@ export default function RootLayout({children}) {
       <body>
         <FacebookTrackingProvider client={facebook}>
           {children}
-          <FacebookPageView />
+          <FacebookPageView
+            action={async event => {
+              'use server'
+              facebook.track(event)
+            }}
+          />
         </FacebookTrackingProvider>
       </body>
     </html>
