@@ -32,6 +32,12 @@ export function FacebookTrackOnClick<
    */
   event: {
     /**
+     * The ID of the event.
+     *
+     * @default uuidv7()
+     */
+    event_id?: string
+    /**
      * The name of the event to track.
      */
     event_name: T
@@ -45,7 +51,7 @@ export function FacebookTrackOnClick<
    */
   children: React.ReactNode
   /**
-   * A server-side function to perform the tracking
+   * A server-side action that will be called after the click handler is called.
    */
   action?: (props: {
     /**
@@ -63,14 +69,14 @@ export function FacebookTrackOnClick<
   }) => Promise<void>
 }): JSX.Element {
   const pixel = useFacebookPixel()
-  const event_id = uuidv7()
+  const {event_id = uuidv7(), ...restEvent} = event
 
   return (
     <Slot
       {...rest}
       onClick={async () => {
         const e = {
-          ...event,
+          ...restEvent,
           event_id,
         }
 
