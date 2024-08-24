@@ -63,7 +63,15 @@ export function FacebookPageView({
   useEffect(() => {
     if (pixel) {
       pixel.track(trackable)
-      action?.(trackable)
+      // Delay the action call by 1 second so pixel have enough time to create
+      // the cookies
+      const timer = setTimeout(() => {
+        action?.(trackable)
+      }, 1000)
+
+      return () => {
+        clearTimeout(timer)
+      }
     }
   }, [pathname, searchParams, pixel, trackable, action])
 
