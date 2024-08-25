@@ -312,7 +312,13 @@ export namespace Facebook {
 
     export type UserRequestData = Pick<
       UserData,
-      'fbp' | 'fbc' | 'client_ip_address' | 'client_user_agent'
+      | 'fbp'
+      | 'fbc'
+      | 'client_ip_address'
+      | 'client_user_agent'
+      | 'city'
+      | 'country'
+      | 'state'
     >
 
     export interface RequestData {

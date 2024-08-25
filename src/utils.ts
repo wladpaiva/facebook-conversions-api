@@ -18,6 +18,39 @@ export function getIp(): string {
   return headers().get('x-real-ip') ?? FALLBACK_IP_ADDRESS
 }
 
+function getCity(): string | undefined {
+  const headersList = headers()
+
+  return (
+    headersList.get('x-vercel-ip-city') ??
+    headersList.get('cf-ipcity') ??
+    headersList.get('x-city') ??
+    undefined
+  )
+}
+
+function getRegion(): string | undefined {
+  const headersList = headers()
+
+  return (
+    headersList.get('x-vercel-ip-country-region') ??
+    headersList.get('cf-region') ??
+    headersList.get('x-region') ??
+    undefined
+  )
+}
+
+function getCountry(): string | undefined {
+  const headersList = headers()
+
+  return (
+    headersList.get('x-vercel-ip-country') ??
+    headersList.get('cf-ipcountry') ??
+    headersList.get('x-country') ??
+    undefined
+  )
+}
+
 /**
  * Retrieves request-related data including user cookies and headers.
  *
@@ -36,6 +69,9 @@ export function getRequestData(): Facebook.Event.RequestData {
 
   return {
     user_data: {
+      city: getCity(),
+      state: getRegion(),
+      country: getCountry(),
       fbp: cookieStore.get('_fbp')?.value,
       fbc: cookieStore.get('_fbc')?.value,
       client_ip_address: getIp(),
