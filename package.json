@@ -1,7 +1,7 @@
 {
   "name": "next-facebook-tracking",
   "description": "A simple package to help you integrate Facebook Pixel and Conversions API with Next.js",
-  "version": "0.1.7-alpha.8",
+  "version": "0.1.8",
   "keywords": [
     "next",
     "facebook",
