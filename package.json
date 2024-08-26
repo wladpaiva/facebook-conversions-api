@@ -1,7 +1,7 @@
 {
   "name": "next-facebook-tracking",
   "description": "A simple package to help you integrate Facebook Pixel and Conversions API with Next.js",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "keywords": [
     "next",
     "facebook",
@@ -54,6 +54,7 @@
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
     "facebook-nodejs-business-sdk": "^20.0.0",
+    "neverthrow": "^7.0.1",
     "parse-full-name": "^1.2.6",
     "uuidv7": "^1.0.1"
   }

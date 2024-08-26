@@ -1,3 +1,4 @@
+import {errAsync, ResultAsync} from 'neverthrow'
 import type {Facebook} from './types'
 import {
   CustomData,
@@ -80,9 +81,15 @@ export class FacebookTracking {
     data_processing_options_state,
     advanced_measurement_table,
     advertiser_tracking_enabled,
-  }: Facebook.Event.EventData<T>): Promise<EventResponse | undefined> {
+  }: Facebook.Event.EventData<T>) {
     if (!this.config.accessToken || !this.config.pixelId) {
-      return
+      if (this.config.debug) {
+        console.error(
+          '[next-facebook-tracking] Missing access token or pixel ID',
+        )
+      }
+
+      return errAsync('Missing access token or pixel ID')
     }
 
     const data = new CustomData(
@@ -174,6 +181,15 @@ export class FacebookTracking {
     }
 
     event_request.setDebugMode(this.config.debug ?? false)
-    return await event_request.execute()
+    return ResultAsync.fromPromise(event_request.execute(), (e: unknown) => {
+      if (this.config.debug) {
+        console.error(
+          '[next-facebook-tracking] Error tracking event',
+          (e as {response: unknown}).response,
+        )
+      }
+
+      return e
+    })
   }
 }
