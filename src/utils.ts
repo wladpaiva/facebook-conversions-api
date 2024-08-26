@@ -1,4 +1,4 @@
-export {parseFullName} from 'parse-full-name'
+export * from 'parse-full-name'
 import {cookies, headers} from 'next/headers.js'
 import type {Facebook} from './types'
 

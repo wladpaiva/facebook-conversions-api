@@ -42,7 +42,6 @@
   "devDependencies": {
     "@types/bun": "latest",
     "@types/facebook-nodejs-business-sdk": "^20.0.2",
-    "@types/parse-full-name": "^1.2.5",
     "@types/react": "^18.3.3",
     "tsup": "^8.2.3"
   },
@@ -53,6 +52,7 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.0",
+    "@types/parse-full-name": "^1.2.5",
     "facebook-nodejs-business-sdk": "^20.0.0",
     "neverthrow": "^7.0.1",
     "parse-full-name": "^1.2.6",
