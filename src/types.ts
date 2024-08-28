@@ -274,9 +274,24 @@ export namespace Facebook {
       first_name?: string
       last_name?: string
       date_of_birth?: string
+      /**
+       * The user's city.
+       * @default Retrieved from request headers using `x-vercel-ip-city`, `cf-ipcity`, or `x-city`.
+       */
       city?: string
+      /**
+       * The user's state or province.
+       * @default Retrieved from request headers using `x-vercel-ip-country-region`, `cf-region`, or `x-region`.
+       */
       state?: string
+      /**
+       * The user's zip or postal code.
+       */
       zip?: string
+      /**
+       * The user's country.
+       * @default Retrieved from request headers using `x-vercel-ip-country`, `cf-ipcountry`, or `x-country`.
+       */
       country?: string
       external_id?: string
       /**
