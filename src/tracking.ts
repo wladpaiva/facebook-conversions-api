@@ -67,21 +67,33 @@ export class FacebookTracking {
   /**
    * Sends a custom event to Facebook Pixel.
    */
-  public async track<T extends Facebook.Event.EventName>({
-    event_id,
-    event_name,
-    custom_data,
-    event_time,
-    event_source_url,
-    user_data,
-    opt_out,
-    action_source,
-    data_processing_options,
-    data_processing_options_country,
-    data_processing_options_state,
-    advanced_measurement_table,
-    advertiser_tracking_enabled,
-  }: Facebook.Event.EventData<T>) {
+  public async track<T extends Facebook.Event.EventName>(
+    {
+      event_id,
+      event_name,
+      custom_data,
+      event_time,
+      event_source_url,
+      user_data,
+      opt_out,
+      action_source,
+      data_processing_options,
+      data_processing_options_country,
+      data_processing_options_state,
+      advanced_measurement_table,
+      advertiser_tracking_enabled,
+    }: Facebook.Event.EventData<T>,
+    {
+      clean,
+    }: {
+      /**
+       * Set it to `true` if you want to track a clean event without any
+       * information from the request
+       * @default false
+       */
+      clean?: boolean
+    } = {},
+  ) {
     if (!this.config.accessToken || !this.config.pixelId) {
       if (this.config.debug) {
         console.error(
@@ -125,7 +137,7 @@ export class FacebookTracking {
       custom_data?.custom_properties,
     )
 
-    const requestData = getRequestData()
+    const requestData = !clean ? getRequestData() : undefined
 
     const user = new UserData(
       user_data?.email,
@@ -134,15 +146,15 @@ export class FacebookTracking {
       user_data?.first_name,
       user_data?.last_name,
       user_data?.date_of_birth,
-      user_data?.city ?? requestData.user_data.city,
-      user_data?.state ?? requestData.user_data.state,
+      user_data?.city ?? requestData?.user_data.city,
+      user_data?.state ?? requestData?.user_data.state,
       user_data?.zip,
-      user_data?.country ?? requestData.user_data.country,
+      user_data?.country ?? requestData?.user_data.country,
       user_data?.external_id,
-      user_data?.client_ip_address ?? requestData.user_data.client_ip_address,
-      user_data?.client_user_agent ?? requestData.user_data.client_user_agent,
-      user_data?.fbp ?? requestData.user_data.fbp,
-      user_data?.fbc ?? requestData.user_data.fbc,
+      user_data?.client_ip_address ?? requestData?.user_data.client_ip_address,
+      user_data?.client_user_agent ?? requestData?.user_data.client_user_agent,
+      user_data?.fbp ?? requestData?.user_data.fbp,
+      user_data?.fbc ?? requestData?.user_data.fbc,
       user_data?.subscription_id,
       user_data?.fb_login_id,
       user_data?.lead_id,
@@ -157,7 +169,7 @@ export class FacebookTracking {
     const event = new ServerEvent(
       event_name,
       event_time ?? Math.floor(new Date().getTime() / 1000), // Convert to seconds
-      event_source_url ?? requestData.event_source_url,
+      event_source_url ?? requestData?.event_source_url,
       user,
       data,
       undefined, // app_data, NOT SURE IF IT'S NEEDED
