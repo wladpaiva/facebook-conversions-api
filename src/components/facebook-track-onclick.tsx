@@ -20,7 +20,7 @@ import {useFacebookPixel} from './pixel-provider'
  */
 export function FacebookTrackOnClick<
   T extends Facebook.Event.EventName,
-  TData extends Facebook.Event.CustomData<T>,
+  TD extends Facebook.BrowserEvent<T>,
 >({
   children,
   event,
@@ -30,22 +30,7 @@ export function FacebookTrackOnClick<
   /**
    * The event to track that will be sent to Facebook when the component is clicked.
    */
-  event: {
-    /**
-     * The ID of the event.
-     *
-     * @default uuidv7()
-     */
-    event_id?: string
-    /**
-     * The name of the event to track.
-     */
-    event_name: T
-    /**
-     * Additional custom data for the event.
-     */
-    custom_data?: TData
-  }
+  event: TD
   /**
    * The clickable content to render inside the component.
    */
@@ -53,33 +38,23 @@ export function FacebookTrackOnClick<
   /**
    * A server-side action that will be called after the click handler is called.
    */
-  action?: (props: {
-    /**
-     * The name of the event to track.
-     */
-    event_name: T
-    /**
-     * The data provided for the event.
-     */
-    custom_data?: TData
-    /**
-     * The ID of the event.
-     */
-    event_id: string
-  }) => Promise<void>
+  action?: (
+    props: Omit<TD, 'event_id'> & {
+      event_id: string
+    },
+  ) => Promise<void>
 }): JSX.Element {
   const pixel = useFacebookPixel()
   const {event_id = uuidv7(), ...restEvent} = event
+  const e = {
+    ...restEvent,
+    event_id,
+  }
 
   return (
     <Slot
       {...rest}
       onClick={async () => {
-        const e = {
-          ...restEvent,
-          event_id,
-        }
-
         pixel?.track(e)
         await action?.(e)
       }}

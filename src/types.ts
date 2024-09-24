@@ -1,4 +1,57 @@
 export namespace Facebook {
+  /**
+   * Props that are going to be passed to facebook's tracking function
+   */
+  export interface Event<T extends Event.EventName> {
+    /**
+     * The name of the event.
+     */
+    event_name: T
+    /**
+     * The custom data associated with the event.
+     */
+    custom_data?: Event.CustomData<T>
+    /**
+     * The ID of the event.
+     */
+    event_id?: string
+    /**
+     * @default The current timestamp in seconds.
+     */
+    event_time?: number
+    /**
+     * @default The current URL.
+     */
+    event_source_url?: string
+    user_data?: Event.UserData
+    opt_out?: boolean
+    /**
+     * @default "website"
+     */
+    action_source?: string
+    data_processing_options?: string[]
+    data_processing_options_country?: number
+    data_processing_options_state?: number
+    advanced_measurement_table?: string
+    advertiser_tracking_enabled?: boolean
+    messaging_channel?: string
+  }
+
+  export type BrowserEvent<T extends Event.EventName> = Omit<
+    Event<T>,
+    | 'event_time'
+    | 'event_source_url'
+    | 'user_data'
+    | 'opt_out'
+    | 'action_source'
+    | 'data_processing_options'
+    | 'data_processing_options_country'
+    | 'data_processing_options_state'
+    | 'advanced_measurement_table'
+    | 'advertiser_tracking_enabled'
+    | 'messaging_channel'
+  >
+
   export namespace Event {
     interface ContentCategory {
       /**
@@ -343,6 +396,7 @@ export namespace Facebook {
 
     /**
      * Props that are going to be passed to facebook's tracking function
+     * @deprecated - Use Facebook.BrowserEvent instead
      */
     export interface EventDataBrowser<T extends EventName> {
       /**
@@ -363,6 +417,7 @@ export namespace Facebook {
 
     /**
      * Represents the event data for a specific event name.
+     * @deprecated - Use Facebook.Event instead
      */
     export interface EventData<T extends EventName>
       extends EventDataBrowser<T> {
