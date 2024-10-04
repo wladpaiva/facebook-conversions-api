@@ -63,7 +63,9 @@ export namespace Facebook {
 
     interface ContentIds {
       /**
-       * Product IDs associated with the event, such as SKUs (e.g. ['ABC123', 'XYZ789']).
+       * The content IDs associated with the event, such as product SKUs (e.g. ['ABC123', 'XYZ789']) for items in an AddToCart event.
+       * If content_type is a product, then your content IDs must be an array with a single string value.
+       * Otherwise, this array can contain any number of string values.
        */
       content_ids?: string[] | number[]
     }
@@ -78,12 +80,51 @@ export namespace Facebook {
 
     interface ContentType {
       /**
-       * Either 'product' or 'product_group' based on the content_ids or contents being passed.
-       * If the IDs being passed in content_ids or contents parameter are IDs of products, then the value should be 'product'.
-       * If product group IDs are being passed, then the value should be 'product_group'.
+       * Should be set to product or product_group:
+       * Use product if the keys you send represent products. Sent keys could be content_ids or contents.
+       * Use product_group if the keys you send in content_ids represent product groups. Product groups are used to distinguish products that are identical but have variations such as color, material, size or pattern.
+       *
        * If no content_type is provided, Meta will match the event to every item that has the same ID, independent of its type.
        */
       content_type?: 'product' | 'product_group'
+    }
+
+    interface Content {
+      /**
+       * Product Id of the Item.
+       */
+      id?: string
+      /**
+       * Quantity of the Item.
+       */
+      quantity?: number
+      /**
+       * Price per unit of the content/product.
+       */
+      item_price?: number
+      /**
+       * Title of the listed Item.
+       */
+      title?: string
+      /**
+       * Product description used for the item.
+       */
+      description?: string
+      /**
+       * Brand of the item.
+       */
+      brand?: string
+      /**
+       * Category of the Item.
+       */
+      category?: string
+      /**
+       * Type of delivery for a purchase event. Supported values are:
+       * in_store — Customer needs to enter the store to get the purchased product.
+       * curbside — Customer picks up their order by driving to a store and waiting inside their vehicle.
+       * home_delivery — Purchase is delivered to the customer's home.
+       */
+      delivery_category?: 'in_store' | 'curbside' | 'home_delivery'
     }
 
     interface Contents {
@@ -92,26 +133,27 @@ export namespace Facebook {
        * or other product or content identifier(s). id and quantity are the required fields.
        * e.g. [{'id': 'ABC123', 'quantity': 2}, {'id': 'XYZ789', 'quantity': 2}].
        */
-      contents?: Array<{id: string; quantity: number}>
+      contents?: Content[]
     }
 
     interface Currency {
       /**
-       * The currency for the value specified.
+       * The currency for the value specified, if applicable.
+       * Currency must be a valid ISO 4217 three-digit currency code.
        */
       currency?: string
     }
 
     interface NumItems {
       /**
-       * Used with InitiateCheckout event. The number of items when checkout was initiated.
+       * The number of items that a user tries to buy during checkout.
        */
       num_items?: number
     }
 
     interface PredictedLtv {
       /**
-       * Predicted lifetime value of a subscriber as defined by the advertiser and expressed as an exact value.
+       * The predicted lifetime value of a conversion event.
        */
       predicted_ltv?: number
     }
@@ -138,29 +180,60 @@ export namespace Facebook {
       value?: number
     }
 
-    export interface FacebookData {}
+    interface OrderId {
+      /**
+       * The order ID for this transaction as a string.
+       */
+      order_id?: string
+    }
+
+    interface ItemNumber {
+      /**
+       * Unique identifier to distinguish events within the same order or transaction.
+       */
+      item_number?: string
+    }
+
+    interface DeliveryCategory {
+      /**
+       * Type of delivery for a purchase event. Supported values are:
+       * in_store — Customer needs to enter the store to get the purchased product.
+       * curbside — Customer picks up their order by driving to a store and waiting inside their vehicle.
+       * home_delivery — Purchase is delivered to the customer's home.
+       */
+      delivery_category?: 'in_store' | 'curbside' | 'home_delivery'
+    }
+
+    export interface FacebookData extends Record<string, any> {}
 
     export interface AddPaymentInfo
       extends FacebookData,
         ContentIds,
         Contents,
         Currency,
-        Value {}
+        Value,
+        OrderId {}
 
     export interface AddToCart
       extends FacebookData,
         ContentIds,
         ContentType,
+        ContentName,
+        ContentCategory,
         Contents,
         Currency,
-        Value {}
+        Value,
+        ItemNumber {}
 
     export interface AddToWishlist
       extends FacebookData,
         ContentIds,
+        ContentName,
+        ContentCategory,
         Contents,
         Currency,
-        Value {}
+        Value,
+        ItemNumber {}
 
     export interface CompleteRegistration
       extends FacebookData,
@@ -182,7 +255,8 @@ export namespace Facebook {
         Contents,
         Currency,
         NumItems,
-        Value {}
+        Value,
+        OrderId {}
 
     export interface Lead extends FacebookData, Currency, Value {}
 
@@ -192,8 +266,9 @@ export namespace Facebook {
         ContentType,
         Contents,
         Currency,
-        NumItems,
-        Value {
+        Value,
+        OrderId,
+        DeliveryCategory {
       currency: string
       value: number
     }
@@ -236,7 +311,8 @@ export namespace Facebook {
         ContentType,
         Contents,
         Currency,
-        Value {}
+        Value,
+        ItemNumber {}
 
     /**
      * Represents the possible sources of an action.

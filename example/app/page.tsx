@@ -9,7 +9,7 @@ export default async function Home() {
   })
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <SomeClientComponent />
 
       <FacebookTrackOnClick
@@ -22,14 +22,27 @@ export default async function Home() {
           custom_data: {
             value: 10.1,
             currency: 'USD',
-            num_items: 1,
+            content_name: 'Lettuce',
+            content_category: 'Grocery',
+            content_ids: ['1234567890'],
+            contents: [{id: '1234567890', quantity: 1}],
+            content_type: 'product',
+            order_id: '1234567890',
+            item_number: '12313213',
           },
         }}
       >
-        <button>Track something</button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Track &quot;AddToCart&quot;
+        </button>
       </FacebookTrackOnClick>
 
-      <Link href="/page-2">Go to Page 2</Link>
+      <Link
+        href="/page-2"
+        className="text-blue-600 hover:text-blue-800 underline mt-4 inline-block ml-6"
+      >
+        Go to Page 2
+      </Link>
     </div>
   )
 }

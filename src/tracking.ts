@@ -3,8 +3,8 @@ import type {Facebook} from './types'
 import {
   CustomData,
   EventRequest,
-  type EventResponse,
   ServerEvent,
+  Content,
   UserData,
 } from 'facebook-nodejs-business-sdk'
 import {getRequestData} from './utils'
@@ -104,37 +104,61 @@ export class FacebookTracking {
       return errAsync('Missing access token or pixel ID')
     }
 
+    const {
+      value,
+      currency,
+      content_name,
+      content_category,
+      content_ids,
+      contents,
+      content_type,
+      order_id,
+      predicted_ltv,
+      num_items,
+      search_string,
+      status,
+      item_number,
+      delivery_category,
+      ...custom_properties
+    } = custom_data || {}
+
     const data = new CustomData(
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.value,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.currency,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.content_name,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.content_category,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.content_ids,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.contents,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.content_type,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.order_id,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.predicted_ltv,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.num_items,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.search_string,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.status,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.item_number,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.delivery_category,
-      // @ts-ignore - doesn't really matter if it's undefined from here
-      custom_data?.custom_properties,
+      value,
+      currency,
+      content_name,
+      content_category,
+      content_ids,
+      contents?.map(
+        (content: {
+          id: string | undefined
+          quantity: number | undefined
+          item_price: number | undefined
+          title: string | undefined
+          description: string | undefined
+          brand: string | undefined
+          category: string | undefined
+          delivery_category: string | undefined
+        }) =>
+          new Content(
+            content.id,
+            content.quantity,
+            content.item_price,
+            content.title,
+            content.description,
+            content.brand,
+            content.category,
+            content.delivery_category,
+          ),
+      ),
+      content_type,
+      order_id,
+      predicted_ltv,
+      num_items,
+      search_string,
+      status,
+      item_number,
+      delivery_category,
+      custom_properties,
     )
 
     const requestData = !clean ? getRequestData() : undefined
